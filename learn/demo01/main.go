@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"demo01/gotest"
+	"fmt"
+)
 
 type fn1 func(int) int
 
@@ -15,4 +18,6 @@ func main() {
 	fmt.Printf("a: %v\n", a)
 	r := test(1, "123")
 	fmt.Printf("r: %v\n", r)
+	gotest.TestTest()
+	test5()
 }
