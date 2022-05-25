@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -103,6 +104,27 @@ func main() {
 			ctx.JSON(http.StatusOK, http.StateActive)
 		})
 	}
+
+	//组件中间件
+	r.GET("/middleware1", func(ctx *gin.Context) {
+		start := time.Now().Unix()
+		fmt.Println("aaa")
+		//执行剩余程序
+		ctx.Next()
+		end := time.Now().Unix()
+		fmt.Println(end - start)
+		fmt.Println("bbb")
+	}, func(ctx *gin.Context) {
+		fmt.Println("response")
+		ctx.JSON(http.StatusOK, http.StatusOK)
+	})
+
+	r.GET("/middleware2", func(ctx *gin.Context) {
+		//终止剩余程序
+		// ctx.Abort()
+	}, func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, http.StatusOK)
+	})
 
 	routes.Init(r)
 	r.Run(":8081")
