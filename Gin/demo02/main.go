@@ -1,6 +1,7 @@
 package main
 
 import (
+	"demo02/middlewares"
 	"demo02/routes"
 	"encoding/xml"
 	"fmt"
@@ -26,8 +27,17 @@ type Article struct {
 	Desc string `xml:"desc" json:"desc"`
 }
 
+func globalMiddleware(ctx *gin.Context) {
+	println("global middleware")
+	ctx.Next()
+	println("global middleware back")
+}
+
 func main() {
 	r := gin.Default()
+
+	//于组件中间前之前
+	r.Use(globalMiddleware, middlewares.LogStatistics)
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.String(200, "zzh123456")
@@ -122,6 +132,19 @@ func main() {
 	r.GET("/middleware2", func(ctx *gin.Context) {
 		//终止剩余程序
 		// ctx.Abort()
+	}, func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, http.StatusOK)
+	})
+
+	//洋葱模型中间件
+	r.GET("/middleware3", func(ctx *gin.Context) {
+		println("1")
+		ctx.Next()
+		println("4")
+	}, func(ctx *gin.Context) {
+		println("2")
+		ctx.Next()
+		println("3")
 	}, func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, http.StatusOK)
 	})

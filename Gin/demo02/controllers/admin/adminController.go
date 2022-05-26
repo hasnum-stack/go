@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,9 +16,20 @@ func (controller Controller) List(ctx *gin.Context) {
 }
 
 func (controller Controller) Create(ctx *gin.Context) {
+	username, _ := ctx.Get("username")
+	fmt.Printf("username: %v\n", username)
+	assertUsername, ok := username.(string)
+	if ok {
+		ctx.JSON(http.StatusOK, gin.H{
+			"msg":      "admin/create",
+			"username": "username is" + assertUsername,
+		})
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"msg": "admin/create",
 	})
+
 }
 
 func (controller Controller) Delete(ctx *gin.Context) {
