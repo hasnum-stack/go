@@ -9,8 +9,7 @@ import (
 func UploadRoutesInit(r *gin.Engine) {
 	userRouter := r.Group("/upload")
 	{
-		userRouter.POST("/image", upload.Image)
+		userRouter.POST("/single", upload.Single)
 		userRouter.POST("/multiple", upload.Multiple)
-
 	}
 }

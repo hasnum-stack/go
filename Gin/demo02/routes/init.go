@@ -8,4 +8,5 @@ func Init(router *gin.Engine) {
 	AdminRoutesInit(router)
 	UserRoutesInit(router)
 	UploadRoutesInit(router)
+	CookieRoutesInit(router)
 }
